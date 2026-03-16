@@ -4,7 +4,7 @@ import { AccountType, Provider } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const DEMO_EMAIL = 'demo@ledgerlens.local';
+const DEMO_EMAIL = 'demo@fundimo.local';
 const DEMO_PASSWORD = 'Password123!';
 
 /** Default categories for mobile contract (idempotent upsert by name). */
@@ -219,7 +219,7 @@ async function main() {
   if (notifCount === 0) {
     await prisma.notification.createMany({
       data: [
-        { user_id: user.id, type: 'WELCOME', title: 'Welcome to LedgerLens', body: 'Your demo data is ready.' },
+        { user_id: user.id, type: 'WELCOME', title: 'Welcome to Fundimo', body: 'Your demo data is ready.' },
         { user_id: user.id, type: 'INFO', title: 'Budgets created', body: 'Sample budgets are set for the last two months.' },
       ],
     });

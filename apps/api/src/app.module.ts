@@ -16,24 +16,24 @@ import { PlaidModule } from './plaid/plaid.module';
 // Resolve .env from api app dir (works when run from repo root or from apps/api)
 const envFilePath = path.join(__dirname, '..', '.env');
 
-@Module({
-  imports: [
-    ConfigModule.forRoot({
+@Module({ // @Module decorator is used to define a NestJS module
+  imports: [ // imports other modules to be used in the app
+    ConfigModule.forRoot({ // provides a global configuration for the app
       isGlobal: true,
-      envFilePath,
+      envFilePath, // loads the .env file into the environment
     }),
-    PrismaModule,
-    AuthModule,
-    CategoriesModule,
-    SettingsModule,
-    AccountsModule,
-    TransactionsModule,
-    BudgetsModule,
-    RulesModule,
+    PrismaModule, // provides PrismaService for database access
+    AuthModule, // provides authentication and authorization services
+    CategoriesModule, // provides category management services
+    SettingsModule, // provides settings management services
+    AccountsModule, // provides account management services
+    TransactionsModule, // provides transaction management services
+    BudgetsModule, // provides budget management services
+    RulesModule, // provides rule management services
     NotificationsModule,
-    SyncModule,
+    SyncModule, // provides sync management services
     PlaidModule,
-  ],
+  ], // provides Plaid integration services
 })
-export class AppModule {}
+export class AppModule {} // exports the AppModule to be used in the main.ts file
 

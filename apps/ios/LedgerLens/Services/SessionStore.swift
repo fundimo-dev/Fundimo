@@ -9,6 +9,7 @@ final class SessionStore: ObservableObject {
     }
 
     @Published private(set) var state: State = .unknown
+    @Published private(set) var lastOAuthCallbackURL: URL?
     private let client = APIClient.shared
 
     var isLoggedIn: Bool {
@@ -57,6 +58,11 @@ final class SessionStore: ObservableObject {
 
     func forceLogout() {
         state = .unauthenticated
+    }
+
+    /// Receives Universal Link callbacks used by OAuth institutions.
+    func handleOAuthCallback(url: URL) {
+        lastOAuthCallbackURL = url
     }
 
     /// Call from ViewModels when an API call fails; if 401, forces logout.

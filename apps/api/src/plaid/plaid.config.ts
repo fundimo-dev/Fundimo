@@ -29,6 +29,14 @@ export class PlaidConfig {
     return this.config.get<string>('PLAID_REDIRECT_URI');
   }
 
+  /**
+   * URL the backend should redirect to after receiving Plaid/bank OAuth callback.
+   * Example: https://app.fundimo.com/plaid/continue
+   */
+  get oauthContinueUri(): string | undefined {
+    return this.config.get<string>('PLAID_OAUTH_CONTINUE_URI');
+  }
+
   get encryptionKey(): string {
     const v = this.config.get<string>('APP_ENCRYPTION_KEY');
     if (!v) throw new Error('APP_ENCRYPTION_KEY is required for Plaid token encryption (32 bytes base64)');

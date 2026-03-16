@@ -1,12 +1,12 @@
 {
-  "name": "ledgerlens-monorepo",
+  "name": "fundimo-monorepo",
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "workspaces": [
     "apps/*"
   ],
   "scripts": {
-    "dev:api": "pnpm --filter @ledgerlens/api start:dev",
-    "build:api": "pnpm --filter @ledgerlens/api build"
+    "dev:api": "pnpm --filter @fundimo/api start:dev",
+    "build:api": "pnpm --filter @fundimo/api build"
   }
 }

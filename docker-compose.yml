@@ -1,9 +1,7 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: ledgerlens-postgres
+    container_name: fundimo-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ledgerlens
@@ -18,7 +16,7 @@ services:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
-    container_name: ledgerlens-api
+    container_name: fundimo-api
     restart: unless-stopped
     depends_on:
       - postgres

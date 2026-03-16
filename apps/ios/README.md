@@ -1,6 +1,6 @@
-# LedgerLens iOS
+# Fundimo iOS
 
-SwiftUI iOS app (iOS 17+) that connects to the LedgerLens NestJS backend. The app uses cookie-based JWT auth (httpOnly); the Simulator talks to the backend at **http://127.0.0.1:3000**.
+SwiftUI iOS app (iOS 17+) that connects to the Fundimo NestJS backend. The app uses cookie-based JWT auth (httpOnly); the Simulator talks to the backend at **http://127.0.0.1:3000/api**.
 
 ---
 
@@ -72,7 +72,7 @@ No extra ATS steps are required if you use the provided project and Info.plist.
 
 Use these credentials to verify the full flow:
 
-- **Email:** `demo@ledgerlens.local`  
+- **Email:** `demo@fundimo.local`  
 - **Password:** `Password123!`
 
 | Step | Action | Expected result |
@@ -92,7 +92,7 @@ Use these credentials to verify the full flow:
 ## Implementation notes
 
 - **Plaid**: **LinkKit** is included via Swift Package Manager (`plaid-link-ios-spm`). **PlaidService** calls `POST /plaid/link-token`, `POST /plaid/exchange`, and `POST /plaid/sync`; **PlaidLinkPresenter** presents the Plaid Link sheet and forwards the public token on success.
-- **APIClient** (`Services/APIClient.swift`): `baseURL = "http://127.0.0.1:3000"`; uses default `URLSession` so **httpOnly cookies** are stored and sent automatically (no manual cookie reading).
+- **APIClient** (`Services/APIClient.swift`): `baseURL = "http://127.0.0.1:3000/api"`; uses default `URLSession` so **httpOnly cookies** are stored and sent automatically (no manual cookie reading).
 - **SessionStore** (`Services/SessionStore.swift`): On launch calls **GET /me** to determine session; provides login/signup/logout; **handleAPIError** forces logout on **401**.
 - **Transactions**: List uses **GET /transactions** with **cursor** and **nextCursor** for “Load more”; detail sheet and swipe actions use **PATCH /transactions/:id** for `is_excluded` and `category_id`.
 - **Settings**: **GET /settings** and **PATCH /settings** for the two toggles; optimistic UI with “Saved” feedback.
@@ -129,3 +129,18 @@ The project adds Plaid Link via SPM. If you opened the project before this was a
 
 - **Mock accounts** (e.g. from **Add account** or seed) and **PLAID** accounts both appear on the Accounts screen.
 - Access tokens are never sent to the client; they are encrypted and stored only on the backend.
+
+---
+
+## 8. OAuth institutions (real-bank flow)
+
+For institutions like Chase that use OAuth:
+
+1. Set backend env:
+   - `PLAID_REDIRECT_URI=https://api.fundimo.com/api/plaid/oauth-redirect`
+   - `PLAID_OAUTH_CONTINUE_URI=https://app.fundimo.com/plaid/continue`
+2. Register `PLAID_REDIRECT_URI` in Plaid Dashboard allowed redirect URIs.
+3. Configure iOS Associated Domains with your app domain (`applinks:app.fundimo.com`).
+4. Host `apple-app-site-association` on your app domain.
+
+The backend callback route `GET /api/plaid/oauth-redirect` forwards query params to `PLAID_OAUTH_CONTINUE_URI` when configured.

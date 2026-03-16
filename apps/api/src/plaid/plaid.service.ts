@@ -92,12 +92,16 @@ export class PlaidService {
     }
   }
 
+  getOAuthContinueUri(): string | undefined {
+    return this.plaidConfig.oauthContinueUri;
+  }
+
   async createLinkToken(userId: string): Promise<{ link_token: string }> {
     if (!this.plaidClient) this.throwPlaidNotConfigured();
     this.logger.log({ userId, msg: 'Creating link token' });
     try {
       const request: LinkTokenCreateRequest = {
-        client_name: 'LedgerLens',
+        client_name: 'Fundimo',
         language: 'en',
         country_codes: [CountryCode.Us],
         user: { client_user_id: userId },

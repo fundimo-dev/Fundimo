@@ -12,7 +12,7 @@ struct LoginView: View {
                 Image(systemName: "chart.bar.doc.horizontal")
                     .font(.system(size: 44))
                     .foregroundStyle(.secondary)
-                Text("LedgerLens")
+                Text("Fundimo")
                     .font(.title.bold())
                 Text("Sign in to continue")
                     .font(.subheadline)

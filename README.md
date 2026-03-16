@@ -1,4 +1,4 @@
-# LedgerLens
+# Fundimo
 
 Budgeting app backend (NestJS + Prisma + Postgres).
 
@@ -47,7 +47,7 @@ API runs at `http://localhost:3000` by default.
 
 ### Demo login
 
-- **Email:** `demo@ledgerlens.local`  
+- **Email:** `demo@fundimo.local`  
 - **Password:** `Password123!`
 
 Example (all API routes are under `/api`):
@@ -55,7 +55,7 @@ Example (all API routes are under `/api`):
 ```bash
 curl -c cookies.txt -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"demo@ledgerlens.local","password":"Password123!"}'
+  -d '{"email":"demo@fundimo.local","password":"Password123!"}'
 ```
 
 Then call the current user endpoint with the stored cookie:
@@ -85,7 +85,8 @@ To use Plaid Link and transaction sync in **sandbox** mode:
    - `PLAID_SECRET` — Plaid **Sandbox** secret  
    - `PLAID_ENV=sandbox`  
    - `APP_ENCRYPTION_KEY` — the base64 string from step 2  
-   - `PLAID_REDIRECT_URI` — optional; leave unset for sandbox without OAuth  
+  - `PLAID_REDIRECT_URI` — optional in sandbox; required for many OAuth institutions in development/production  
+  - `PLAID_OAUTH_CONTINUE_URI` — optional backend redirect target back to app/web domain after OAuth callback  
 
 4. Restart the API. If any of these are missing in a non-test environment, the app will fail fast on startup. Env is loaded from `apps/api/.env` (and from the process when running from repo root).
 
@@ -94,6 +95,7 @@ Endpoints (all require auth, under `/api`):
 - **POST /api/plaid/link-token** — returns `{ link_token }` for Plaid Link  
 - **POST /api/plaid/exchange** — body `{ public_token }`; exchanges token, creates PlaidItem + ConnectedAccounts, returns `{ accounts }` (no tokens)  
 - **POST /api/plaid/sync** — manual sync of Plaid transactions into the app; returns `{ added, modified, removed }`  
+- **GET /api/plaid/oauth-redirect** — OAuth callback endpoint for institutions that redirect through bank auth; forwards to `PLAID_OAUTH_CONTINUE_URI` when set  
 
 Mock flows (**POST /api/accounts/mock-link**, seed data, mock transactions) continue to work; the UI shows both MOCK and PLAID accounts.
 
@@ -107,7 +109,7 @@ With the API running and Plaid env set in `apps/api/.env`:
 # 1) Login (saves cookie)
 curl -c cookies.txt -X POST http://127.0.0.1:3000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"demo@ledgerlens.local","password":"Password123!"}'
+  -d '{"email":"demo@fundimo.local","password":"Password123!"}'
 
 # 2) Get link token (expect 200 + JSON with link_token)
 curl -i -b cookies.txt -X POST http://127.0.0.1:3000/api/plaid/link-token

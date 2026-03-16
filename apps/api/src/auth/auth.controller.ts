@@ -34,7 +34,7 @@ export class AuthController {
     res.cookie(AUTH_COOKIE_NAME, token, cookieOptions());
     return user;
   }
-
+  
   @Post('login')
   async login(
     @Body() dto: LoginDto,
