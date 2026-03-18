@@ -1,16 +1,17 @@
 FROM node:20-alpine AS base
 
+# Add OpenSSL for Prisma
+RUN apk add --no-cache openssl
+
 WORKDIR /usr/src/app
 
 ENV NODE_ENV=production
 
-# Copy dependency files first (better layer caching)
 COPY package.json ./
 COPY tsconfig.json nest-cli.json ./
 COPY prisma ./prisma
 COPY src ./src
 
-# Install ALL deps (including dev) so nest build works
 RUN npm install --include=dev
 
 RUN npx prisma generate --schema=./prisma/schema.prisma
