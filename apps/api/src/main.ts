@@ -56,7 +56,7 @@ async function bootstrap() { // bootstrap function that is used to start the app
   );
 
   const port = process.env.PORT ?? 3000; // looks for the port in the .env file, if not found, uses 3000
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   console.log(`Fundimo API listening on port ${port}`); // logs the port to the console showing that the server is running
 }
 

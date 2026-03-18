@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Provider, RuleMatchType } from '@prisma/client';
+import { Provider, RuleMatchType, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { reconcile } from '../domain/reconciliation';
 import { FINANCIAL_DATA_PROVIDER, FinancialDataProvider } from '../providers/financial-data.provider';
@@ -64,7 +64,7 @@ export class SyncService {
             provider: Provider.MOCK,
             provider_transaction_id: t.provider_transaction_id,
             provider_pending_id: t.provider_pending_id,
-            metadata: t.metadata ?? undefined,
+            metadata: (t.metadata ?? undefined) as Prisma.InputJsonValue,
           })),
         });
       }
