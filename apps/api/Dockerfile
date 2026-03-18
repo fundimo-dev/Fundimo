@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
 # Copy dependency files first (better layer caching)
-COPY package.json package-lock.json ./
+COPY package.json ./
 COPY tsconfig.json nest-cli.json ./
 COPY prisma ./prisma
 COPY src ./src
