@@ -4,13 +4,17 @@ WORKDIR /usr/src/app
 
 ENV NODE_ENV=production
 
-COPY package.json ./
+# Copy dependency files first (better layer caching)
+COPY package.json package-lock.json ./
 COPY tsconfig.json nest-cli.json ./
 COPY prisma ./prisma
 COPY src ./src
 
-RUN npm install
+# Install ALL deps (including dev) so nest build works
+RUN npm install --include=dev
+
 RUN npx prisma generate --schema=./prisma/schema.prisma
+
 RUN npm run build
 
 EXPOSE 3000
